@@ -4,6 +4,12 @@ import os
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
+"""
+Ce script utilise Evidently AI pour monitorer le Data Drift et la Classification.
+Note : En cas d'erreur d'importation sur certains environnements Windows, 
+vérifier la compatibilité entre Pydantic v1 et Evidently.
+"""
+
 def main():
     print("📊 Test de présence d'Evidently...")
     try:
