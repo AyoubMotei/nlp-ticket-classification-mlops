@@ -8,9 +8,6 @@ from nltk.tokenize import word_tokenize
 # Téléchargement des ressources nécessaires
 # On télécharge les 'stopwords' (mots fréquents sans valeur sémantique)
 # et 'punkt' (le modèle pour découper les phrases en mots)
-# nltk.download('stopwords')
-# nltk.download('punkt')
-
 nltk.download('stopwords', quiet=True)
 nltk.download('punkt', quiet=True)
 nltk.download('punkt_tab', quiet=True)
