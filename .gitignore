@@ -1,0 +1,33 @@
+# --- Environnement Virtuel ---
+venv/
+.env
+__pycache__/
+*.py[cod]
+
+# --- Données et Bases de données (Très important !) ---
+# On ne versionne pas les données brutes ou transformées si elles sont lourdes
+data/cleaned_dataset.csv
+# On ne versionne JAMAIS le dossier de la base vectorielle ChromaDB (trop lourd et binaire)
+db/
+
+# --- Artefacts de Modèles ---
+# Les modèles entraînés (.pkl) peuvent peser plusieurs Mo/Go
+models/*.pkl
+
+# --- Notebooks ---
+.ipynb_checkpoints/
+
+# --- Rapports de Monitoring ---
+# Les rapports Evidently AI sont générés à la volée
+reports/*.html
+
+# --- Logs et Temporaires ---
+*.log
+.DS_Store
+.vscode/
+.idea/
+
+# --- Monitoring Infra ---
+# Données persistantes de Prometheus/Grafana (si lancées via docker)
+monitoring/grafana_data/
+monitoring/prometheus_data/
