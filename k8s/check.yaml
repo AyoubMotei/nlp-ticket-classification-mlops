@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: check-disk
+spec:
+  containers:
+  - name: checker
+    image: busybox
+    command: ["ls", "-R", "/mnt"]
+    volumeMounts:
+    - name: storage
+      mountPath: /mnt
+  volumes:
+  - name: storage
+    persistentVolumeClaim:
+      claimName: nlp-model-pvc
+  restartPolicy: Never

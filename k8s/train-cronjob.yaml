@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nlp-train-cronjob
+spec:
+  schedule: "0 0 * * 0"  # S'exécute tous les dimanches à minuit
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: nlp-train-container
+            image: nlp-ticket-classification-mlops:latest
+            imagePullPolicy: Never
+            volumeMounts:
+            - name: model-storage
+              mountPath: /app/models
+          volumes:
+          - name: model-storage
+            persistentVolumeClaim:
+              claimName: nlp-model-pvc
+          restartPolicy: OnFailure

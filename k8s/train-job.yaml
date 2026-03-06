@@ -6,13 +6,17 @@ spec:
   template:
     spec:
       containers:
-      - name: nlp-pipeline
+      - name: nlp-train-container
         image: nlp-ticket-classification-mlops:latest
         imagePullPolicy: Never
-        # On donne un peu de souffle au container
-        resources:
-          limits:
-            memory: "2Gi"
-            cpu: "1000m"
+
+        volumeMounts:
+        - name: model-storage
+          mountPath: /app/models  
+       
+      volumes:
+      - name: model-storage
+        persistentVolumeClaim:
+          claimName: nlp-model-pvc
+      
       restartPolicy: Never
-  backoffLimit: 2
