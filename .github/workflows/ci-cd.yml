@@ -1,17 +1,19 @@
 name: ML Pipeline CI
 
+# 1. Déclencheurs : Le pipeline s'exécute lors d'un push ou PR sur master, main ou develop
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "main", "develop", "master" ]
   pull_request:
-    branches: [ "main", "develop" ]
+    branches: [ "main", "develop", "master" ]
 
 jobs:
-  # Étape 1 : Vérification de la qualité du code (Linting)
+  # JOB 1 : Vérification de la qualité du code (Linting)
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
       
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -25,19 +27,24 @@ jobs:
           
       - name: Lint with flake8
         run: |
-          # stop the build if there are Python syntax errors or undefined names
+          # Arrête le build s'il y a des erreurs de syntaxe Python ou des noms non définis
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          # exit-zero treats all errors as warnings
+          # Sortie en douceur pour les avertissements de style (PEP8)
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-  # Étape 2 : Construction de l'image Docker
+  # JOB 2 : Construction de l'image Docker (uniquement si le Lint réussit)
   build-docker:
-    needs: lint # Ne se lance que si le lint a réussi
+    needs: lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
       
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Build Docker Image
         run: |
+          # Construction de l'image avec un tag basé sur le SHA du commit pour la traçabilité
           docker build -t nlp-ticket-classification-mlops:${{ github.sha }} .
-          echo "Image build successfully"
+          echo "L'image Docker a été construite avec succès."
